@@ -1,11 +1,22 @@
 adl={"admin1":{"password":"a111"},"admin2":{"password":"a222"}}
 merl={"mer1":{"password":"m111"}}
-ul={"user1":{"password":"u111","wallet":200,"orders":{}},
-       "user2":{"password":"u222","wallet":500,"orders":{}}}
+ul={"user1":{"password":"u111","wallet":200,"cart":{}},
+       "user2":{"password":"u222","wallet":500,"cart":{}}}
 apme={}
 aprej={}
 def newuser():
-    pass
+    print("Enter username:")
+    nus=input()
+    print("Enter password:")
+    nusp=input()
+    if nus not in ul:
+        ulad={nus:{"password":nusp,"wallet":0,"cart":{}}}
+        ul.update(ulad)
+        print("user",nus,"added succesfully")
+        input("\tPress Enter to continue")
+    else:
+        print("please! change username and try again")
+        input("\tPress Enter to continue")
 def existuser():
     print("Enter your username:")
     us=input()
@@ -13,6 +24,7 @@ def existuser():
     uspas=input()
     if ul[us]["password"]==uspas:
         print(us,"Succesfully logged in")
+        input("\tPress enter to continue")
     else:
         print("Invalid password")
         input("\tpress enterto continue")
