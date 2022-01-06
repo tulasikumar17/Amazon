@@ -4,6 +4,24 @@ ul={"user1":{"password":"u111","wallet":200,"cart":{}},
        "user2":{"password":"u222","wallet":500,"cart":{}}}
 apme={}
 aprej={}
+def wallet(us_w):
+    while True:
+        print(us_w,"your wallet have",ul[us_w]["wallet"],"balance")
+        print("1.addamount\n2.removeamount\n3.Exit")
+        us_wi=input("Enter your choice:")
+        if us_wi=="1":
+            pass
+        elif us_wi=="2":
+            pass
+        elif us_wi=="3":
+            pass
+        else:
+            print("Invalid Input!")
+            input("\tPress Enter to continue")
+def placeord(us_p):
+    pass
+def cart(us_c):
+    pass
 def newuser():
     print("Enter username:")
     nus=input()
@@ -15,7 +33,7 @@ def newuser():
         print("user",nus,"added succesfully")
         input("\tPress Enter to continue")
     else:
-        print("please! change username and try again")
+        print("Please! change username and try again")
         input("\tPress Enter to continue")
 def existuser():
     print("Enter your username:")
@@ -23,8 +41,23 @@ def existuser():
     print("Enter your password:")
     uspas=input()
     if ul[us]["password"]==uspas:
-        print(us,"Succesfully logged in")
-        input("\tPress enter to continue")
+        print("\t",us,"Succesfully logged in")
+        while True:
+            print("1.wallet\n2.placeorder\n3.cart\4.removeorder\5.Exit")
+            us_int=input("Enter your choice:")
+            if us_int=="1":
+                wallet(us)
+            elif us_int=="2":
+                placeord(us)
+            elif us_int=="3":
+                cart(us)
+            elif us_int=="4":
+                pass
+            elif us_int=="5":
+                break
+            else:
+                print("Invalid Input!")
+                input("\tPress Enter to continue")
     else:
         print("Invalid password")
         input("\tpress enterto continue")
@@ -79,10 +112,6 @@ def existmerchant():
         print("Please! contact admistrator")
         input("\tpress Enter to continue")
 def addmerchants():
-    if len(apme)!=0:
-        print("new approve requests")
-    else:
-        print("no new requests")
 def approvemerch():
     if len(apme)!=0:
         print(*apme.keys())
@@ -130,15 +159,13 @@ def admin():
     if adl[ad]["password"]==adpas:
         print(ad,"Succesfully logged in")
         while True:
-            print("1.Approve merchants\n2.Remove merchants\n3.Approve users\n4.Exit")
+            print("1.Approve merchants\n2.Remove merchants\n3.Exit")
             adch=int(input("Enter your Choice :"))
             if adch==1:
                 approvemerch()
             elif adch==2:
                 removemer()
             elif adch==3:
-                pass
-            elif adch==4:
                 break
             else:
                 print("Invalid Input")
@@ -174,7 +201,7 @@ def user():
 def orders():
     print("inside orders")
 while True:
-    print("\tWelacome to Amazon")
+    print("\tWelcome to Amazon")
     print("1.Admin\n2.Merchant\n3.User\n4.exit")
     print("Enter your choice")
     a=input()
