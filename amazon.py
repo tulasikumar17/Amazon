@@ -99,6 +99,9 @@ def newmerchant():
             apme.update(a)
             print("requested")
             input("\tPress enter to continue")
+        else:
+            print("your request is in progress")
+            
     else:
         print("invalid username change it:")
         input("\tEnter to continue")
