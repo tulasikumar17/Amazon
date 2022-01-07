@@ -1,28 +1,47 @@
 adl={"admin1":{"password":"a111"},"admin2":{"password":"a222"}}
-merl={"mer1":{"password":"m111"}}
+merl={"mer1":{"password":"m111","products":{}}}
 ul={"user1":{"password":"u111","wallet":200,"cart":{}},
        "user2":{"password":"u222","wallet":500,"cart":{}}}
+prd={"search":{"categories":{"mobiles":{},
+    "laptops":{},"food products":{}}}}
 apme={}
 aprej={}
+def adprt():
+    print("please select category to add:")
+    print(*prd["search"]["categories"].keys(),sep="or")
+    adc=input("Enter category to add:")
+    if adc in prd["search"]["categories"].keys():
+        ad_p=input("Enter name of product:")
+        print("cost of product:")
+        ad_c=int(input())
+    else:
+        print("there is no product category name",adc)
+        input("\tPress Enter to continue")
+def reprt():
+    pass
 def walar(us_w,x):
     print("Enter amount to",x,":")
     walm=int(input())
     if x=="add":
-        ada=ul[us_w]["wallet"]+walm
-        print("your wallet amount is",ada)
+        ul[us_w]["wallet"]=ul[us_w]["wallet"]+walm
+        
+        print("your wallet amount is",ul[us_w]["wallet"])
         input("\tPress Enter to continue")
     else:
+        ul[us_w]["wallet"]=ul[us_w]["wallet"]-walm
+        print("your wallet amount is",ul[us_w]["wallet"])
+        input("\tPress Enter to continue")
 def wallet(us_w):
     while True:
         print(us_w,"your wallet have",ul[us_w]["wallet"],"balance")
         print("1.addamount\n2.removeamount\n3.Exit")
         us_wi=input("Enter your choice:")
         if us_wi=="1":
-            pass
+            walar(us_w,"add")
         elif us_wi=="2":
-            pass
+            walar(us_w,"sub")
         elif us_wi=="3":
-            pass
+            break
         else:
             print("Invalid Input!")
             input("\tPress Enter to continue")
@@ -51,7 +70,7 @@ def existuser():
     if ul[us]["password"]==uspas:
         print("\t",us,"Succesfully logged in")
         while True:
-            print("1.wallet\n2.placeorder\n3.cart\4.removeorder\5.Exit")
+            print("1.wallet\n2.placeorder\n3.cart\n4.removeorder\n5.Exit")
             us_int=input("Enter your choice:")
             if us_int=="1":
                 wallet(us)
@@ -97,9 +116,9 @@ def existmerchant():
                         print("1.Add products\n2.Remove products\n3.orders\n4.Exit")
                         mech=int(input("Enter your Choice :"))
                         if mech==1:
-                            pass
+                            adprt()
                         elif mech==2:
-                            pass
+                            reprt()
                         elif mech==3:
                             pass
                         elif mech==4:
@@ -119,7 +138,6 @@ def existmerchant():
         print("your request is rejected")
         print("Please! contact admistrator")
         input("\tpress Enter to continue")
-def addmerchants():
 def approvemerch():
     if len(apme)!=0:
         print(*apme.keys())
