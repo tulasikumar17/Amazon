@@ -4,6 +4,14 @@ ul={"user1":{"password":"u111","wallet":200,"cart":{}},
        "user2":{"password":"u222","wallet":500,"cart":{}}}
 apme={}
 aprej={}
+def walar(us_w,x):
+    print("Enter amount to",x,":")
+    walm=int(input())
+    if x=="add":
+        ada=ul[us_w]["wallet"]+walm
+        print("your wallet amount is",ada)
+        input("\tPress Enter to continue")
+    else:
 def wallet(us_w):
     while True:
         print(us_w,"your wallet have",ul[us_w]["wallet"],"balance")
