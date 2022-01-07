@@ -2,23 +2,49 @@ adl={"admin1":{"password":"a111"},"admin2":{"password":"a222"}}
 merl={"mer1":{"password":"m111","products":{}}}
 ul={"user1":{"password":"u111","wallet":200,"cart":{}},
        "user2":{"password":"u222","wallet":500,"cart":{}}}
-prd={"search":{"categories":{"mobiles":{},
-    "laptops":{},"food products":{}}}}
+prd={"search":{"categories":
+    {"mobiles":{"Mi":{"name":"6 pro","cost":12000,"quantity":5},"oppo":{}},
+    "laptops":{"hp":{},"dell":{}},
+    "food products":{"chocolates":{},"chips":{}}}}}
 apme={}
 aprej={}
 def adprt():
-    print("please select category to add:")
-    print(*prd["search"]["categories"].keys(),sep="or")
-    adc=input("Enter category to add:")
+    print("please select product category to add :")
+    print(*prd["search"]["categories"].keys(),sep=" or ")
+    adc=input("Enter category to add :")
     if adc in prd["search"]["categories"].keys():
-        ad_p=input("Enter name of product:")
+        print(*prd["search"]["categories"][adc].keys(),sep=" or ")
+        ad_p=input("Enter name of product :")
         print("cost of product:")
         ad_c=int(input())
+        ad_q=input("Enter Quantity to add :")
+        if ad_c>0:
+            ad_up={"search":{"categories":{adc:{ad_p:{"name":ad_p,"cost":ad_c,"quantity":ad_q}}}}}
+            prd.update(ad_up)
+            print("Succesfully added the product")
+            input("\tPress Enter to continue")
+        else:
+            print("Inavlid Input!")
+            input("\tPress Enter to continue")
     else:
         print("there is no product category name",adc)
         input("\tPress Enter to continue")
 def reprt():
-    pass
+    print("please select product category to remove :")
+    print(*prd["search"]["categories"].keys(),sep=" or ")
+    adr=input("Enter category to remove :")
+    if adr in prd["search"]["categories"].keys():
+        print(*prd["search"]["categories"][adr].keys(),sep=" or ")
+        ad_rp=input("Enter name of product to remove :")
+        apme_copy={**prd["search"]["categories"]}
+        for i in apme_copy.keys():
+            if i==ad_rp:
+                prd["search"]["categories"][adr].pop(i)
+        print("Succesfully removed the product")
+        input("\tPress Enter to continue")
+    else:
+        print(ad_rp,"not in product list")
+        input("\tPress Enter to continue")
 def walar(us_w,x):
     print("Enter amount to",x,":")
     walm=int(input())
@@ -164,6 +190,9 @@ def approvemerch():
                     aprej.update(apme_w)
                     apme.pop(i)
             print("Request Rejected")
+            input("\tpress Enter to continue")
+        else:
+            print("Invalid Input")
             input("\tpress Enter to continue")
     else:
         print("No approvals")
