@@ -1,62 +1,108 @@
+import os
 adl={"admin1":{"password":"a111"},"admin2":{"password":"a222"}}
 merl={"mer1":{"password":"m111","products":{}}}
-ul={"user1":{"password":"u111","wallet":200,"cart":{}},
-       "user2":{"password":"u222","wallet":500,"cart":{}}}
-prd={"search":{"categories":
-    {"mobiles":{"Mi":{"name":"6 pro","cost":12000,"quantity":5},"oppo":{}},
-    "laptops":{"hp":{},"dell":{}},
-    "food products":{"chocolates":{},"chips":{}}}}}
+ul={"user1":{"password":"u111","wallet":25000,"cart":{},"previous orders":{}},
+       "user2":{"password":"u222","wallet":50000,"cart":{},"previous orders":{}}}
+prd={"categories":
+    {"mobiles":{"Mi":{"name":"6 pro","cost":12000,"quantity":5},"oppo":{}},"laptops":{"hp":{},"dell":{}},"food products":{"chocolates":{},"chips":{}}}}
 apme={}
 aprej={}
+def buypr(us_po,adc,ad_p):
+    print("Enter the quantity you want to buy")
+    bu_p=input()
+    try:
+        if int(bu_p)<prd["categories"][adc][ad_p]["quantity"]:
+            ab_c=prd["categories"][adc][ad_p]["cost"]
+            if int(bu_p)*ab_c<=ul[us_po]["wallet"]:
+                print("Total cost is :",int(bu_p)*prd["categories"][adc][ad_p]["cost"])
+                as_p={adc:{"name":prd["categories"][adc][ad_p]["name"],"cost":int(bu_p)*prd["categories"][adc][ad_p]["cost"],"quantity":int(bu_p)}}
+                ul[us_po]["wallet"]=ul[us_po]["wallet"]-int(bu_p)*ab_c
+                ul[us_po]["previous orders"].update(as_p)
+                print("Your order is succefully placed")
+                input("\tPress Enter to continue")
+            else:
+                print("You don't have sufficient balance in your wallet")
+                input("\tPress Enter to continue")
+        else:
+            print("The selected quantity is unavalable")
+            input("\tPress Enter to continue")
+    except:
+        print("Quantity must be a number")
+        input("\tPress Enter to continue")
+def cartadd(us_po,adc,ad_p):
+    as_p={adc:{"name":prd["categories"][adc][ad_p]["name"],"cost":prd["categories"][adc][ad_p]["cost"]}}
+    ul[us_po]["cart"].update(as_p)
+    print("Your order is succefully added to cart")
+    input("\tPress Enter to continue")
+def prevord(us):
+    print("\tPrevious orders")
+    co_u=0
+    for i in ul[us]["previous orders"].keys():
+        co_u=co_u+1
+        print("\tOrder -->",co_u)
+        print(i)
+        for j in ul[us]["previous orders"][i].keys():
+            print(j,end="-->")
+            print(ul[us]["previous orders"][i][j])
+        input("\tPress Enter to continue")
 def adprt():
     print("please select product category to add :")
-    print(*prd["search"]["categories"].keys(),sep=" or ")
+    print(*prd["categories"].keys(),sep=" or ")
     adc=input("Enter category to add :")
-    if adc in prd["search"]["categories"].keys():
-        print(*prd["search"]["categories"][adc].keys(),sep=" or ")
-        ad_p=input("Enter name of product :")
-        print("cost of product:")
-        ad_c=int(input())
-        ad_q=input("Enter Quantity to add :")
-        if ad_c>0:
-            ad_up={"search":{"categories":{adc:{ad_p:{"name":ad_p,"cost":ad_c,"quantity":ad_q}}}}}
-            prd.update(ad_up)
-            print("Succesfully added the product")
-            input("\tPress Enter to continue")
+    try:
+        if adc in prd["categories"].keys():
+            print(*prd["categories"][adc].keys(),sep=" or ")
+            ad_p=input("Enter name of product :")
+            print("cost of product:")
+            try:
+                ad_c=int(input())
+                ad_q=input("Enter Quantity to add :")
+                if ad_c>0:
+                    ad_up={"categories":{adc:{ad_p:{"name":ad_p,"cost":ad_c,"quantity":ad_q}}}}
+                    prd.update(ad_up)
+                    print("Succesfully added the product")
+                    input("\tPress Enter to continue")
+                else:
+                    print("Inavlid Input!")
+                    input("\tPress Enter to continue")
+            except:
+                pass
         else:
-            print("Inavlid Input!")
+            print("there is no product category name",adc)
             input("\tPress Enter to continue")
-    else:
-        print("there is no product category name",adc)
-        input("\tPress Enter to continue")
+    except:
+        pass
 def reprt():
     print("please select product category to remove :")
-    print(*prd["search"]["categories"].keys(),sep=" or ")
+    print(*prd["categories"].keys(),sep=" or ")
     adr=input("Enter category to remove :")
-    if adr in prd["search"]["categories"].keys():
-        print(*prd["search"]["categories"][adr].keys(),sep=" or ")
+    if adr in prd["categories"].keys():
+        print(*prd["categories"][adr].keys(),sep=" or ")
         ad_rp=input("Enter name of product to remove :")
-        apme_copy={**prd["search"]["categories"]}
+        apme_copy={**prd["categories"]}
         for i in apme_copy.keys():
             if i==ad_rp:
-                prd["search"]["categories"][adr].pop(i)
+                prd["categories"][adr].pop(i)
         print("Succesfully removed the product")
         input("\tPress Enter to continue")
     else:
-        print(ad_rp,"not in product list")
+        print(adr,"not in product list")
         input("\tPress Enter to continue")
 def walar(us_w,x):
     print("Enter amount to",x,":")
-    walm=int(input())
-    if x=="add":
-        ul[us_w]["wallet"]=ul[us_w]["wallet"]+walm
-        
-        print("your wallet amount is",ul[us_w]["wallet"])
-        input("\tPress Enter to continue")
-    else:
-        ul[us_w]["wallet"]=ul[us_w]["wallet"]-walm
-        print("your wallet amount is",ul[us_w]["wallet"])
-        input("\tPress Enter to continue")
+    try:
+        walm=int(input())
+        if x=="add":
+            ul[us_w]["wallet"]=ul[us_w]["wallet"]+walm
+            
+            print("your wallet amount is",ul[us_w]["wallet"])
+            input("\tPress Enter to continue")
+        else:
+            ul[us_w]["wallet"]=ul[us_w]["wallet"]-walm
+            print("your wallet amount is",ul[us_w]["wallet"])
+            input("\tPress Enter to continue")
+    except:
+        pass
 def wallet(us_w):
     while True:
         print(us_w,"your wallet have",ul[us_w]["wallet"],"balance")
@@ -71,10 +117,50 @@ def wallet(us_w):
         else:
             print("Invalid Input!")
             input("\tPress Enter to continue")
-def placeord(us_p):
-    pass
-def cart(us_c):
-    pass
+def placeord(us_po):
+    print(us_po,"enjoy")
+    print("1.select product category to buy")
+    print(*prd["categories"].keys(),sep=" or ")
+    adc=input("Enter category to add :")
+    try:
+        if adc in prd["categories"].keys():
+            print(*prd["categories"][adc].keys(),sep=" or ")
+            ad_p=input("Enter name of product :")
+            if prd["categories"][adc][ad_p]["quantity"]>0:
+                for i in prd["categories"][adc][ad_p]:
+                    if i!="quantity":
+                        print(i,end="-->")
+                        print(prd["categories"][adc][ad_p][i])
+                print("Press 1 to buy the product\nPress 2 to add to cart\nPress 0 to bo back")
+                uad_c=input("Enter your choice :")
+                if uad_c=="1":
+                    buypr(us_po,adc,ad_p)
+                elif uad_c=="2":
+                    cartadd(us_po,adc,ad_p)
+                elif uad_c=="0":
+                    pass
+                else:
+                    print("Invalid Input")
+                    input("\tPress Enter to continue")
+            else:
+                print("Selected product is currently not available")
+                input("\tPress Enter to continue")
+        else:
+            print("there is no product category name",adc)
+            input("\tPress Enter to continue")
+    except:
+        pass
+def cart(us):
+    print("inside cart")
+    co_u=0
+    for i in ul[us]["cart"].keys():
+        co_u=co_u+1
+        print("\tOrder -->",co_u)
+        print(i)
+        for j in ul[us]["cart"][i].keys():
+            print(j,end="-->")
+            print(ul[us]["cart"][i][j])
+        input("\tPress Enter to continue")
 def newuser():
     print("Enter username:")
     nus=input()
@@ -96,7 +182,7 @@ def existuser():
     if ul[us]["password"]==uspas:
         print("\t",us,"Succesfully logged in")
         while True:
-            print("1.wallet\n2.placeorder\n3.cart\n4.removeorder\n5.Exit")
+            print("1.wallet\n2.placeorder\n3.cart\n4.previous order\n5.Exit")
             us_int=input("Enter your choice:")
             if us_int=="1":
                 wallet(us)
@@ -105,7 +191,7 @@ def existuser():
             elif us_int=="3":
                 cart(us)
             elif us_int=="4":
-                pass
+                prevord(us)
             elif us_int=="5":
                 break
             else:
@@ -142,18 +228,21 @@ def existmerchant():
                 if merl[me]["password"]==mepas:
                     print(me,"Succesfully logged in")
                     while True:
-                        print("1.Add products\n2.Remove products\n3.orders\n4.Exit")
-                        mech=int(input("Enter your Choice :"))
-                        if mech==1:
-                            adprt()
-                        elif mech==2:
-                            reprt()
-                        elif mech==3:
+                        try:
+                            print("1.Add products\n2.Remove products\n3.orders\n4.Exit")
+                            mech=int(input("Enter your Choice :"))
+                            if mech==1:
+                                adprt()
+                            elif mech==2:
+                                reprt()
+                            elif mech==3:
+                                pass
+                            elif mech==4:
+                                break
+                            else:
+                                print("Invalid Input")
+                        except:
                             pass
-                        elif mech==4:
-                            break
-                        else:
-                            print("Invalid Input")
                 else:
                     print("Invalid login credentials")
                     input("\tpress Enter to continue")
@@ -214,22 +303,25 @@ def admin():
     ad=input()
     print("Enter your password:")
     adpas=input()
-    if adl[ad]["password"]==adpas:
-        print(ad,"Succesfully logged in")
-        while True:
-            print("1.Approve merchants\n2.Remove merchants\n3.Exit")
-            adch=int(input("Enter your Choice :"))
-            if adch==1:
-                approvemerch()
-            elif adch==2:
-                removemer()
-            elif adch==3:
-                break
-            else:
-                print("Invalid Input")
-    else:
-        print("Invalid Login credentials")
-        input("\tPress Enter to continue")
+    try:
+        if adl[ad]["password"]==adpas:
+            print(ad,"Succesfully logged in")
+            while True:
+                print("1.Approve merchants\n2.Remove merchants\n3.Exit")
+                adch=int(input("Enter your Choice :"))
+                if adch==1:
+                    approvemerch()
+                elif adch==2:
+                    removemer()
+                elif adch==3:
+                    break
+                else:
+                    print("Invalid Input")
+        else:
+            print("Invalid Login credentials")
+            input("\tPress Enter to continue")
+    except:
+        pass 
 def merchant():
     while True:
         print("1.New merchant\n2.Existing merchant\n3.Exit")
@@ -248,8 +340,12 @@ def user():
         print("Enter your choice:")
         us_i=input()
         if us_i=="1":
+            os.system("cls")
+            print("New user requesting")
             newuser()
         elif us_i=="2":
+            os.system("cls")
+            print("Existing user login")
             existuser()
         elif us_i=="3":
             break
@@ -259,17 +355,25 @@ def user():
 def orders():
     print("inside orders")
 while True:
+    os.system("cls")
     print("\tWelcome to Amazon")
     print("1.Admin\n2.Merchant\n3.User\n4.exit")
     print("Enter your choice")
     a=input()
     if a=="1":
+        os.system("cls")
+        print("\tAdmin login")
         admin()
     elif a=="2":
+        os.system("cls")
+        print("\tMerchant login")
         merchant()
     elif a=="3":
+        os.system("cls")
+        print("\tUser login")
         user()
     elif a=="4":
         break
     else:
+        os.system("cls")
         print("Invalid Input")
