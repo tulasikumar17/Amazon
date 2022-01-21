@@ -229,15 +229,13 @@ def existmerchant():
                     print(me,"Succesfully logged in")
                     while True:
                         try:
-                            print("1.Add products\n2.Remove products\n3.orders\n4.Exit")
+                            print("1.Add products\n2.Remove products\n3.Exit")
                             mech=int(input("Enter your Choice :"))
                             if mech==1:
                                 adprt()
                             elif mech==2:
                                 reprt()
                             elif mech==3:
-                                pass
-                            elif mech==4:
                                 break
                             else:
                                 print("Invalid Input")
@@ -352,8 +350,7 @@ def user():
         else:
             print("Invalid input")
             input("\tpress enterto continue")
-def orders():
-    print("inside orders")
+
 while True:
     os.system("cls")
     print("\tWelcome to Amazon")
